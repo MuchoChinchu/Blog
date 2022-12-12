@@ -21,4 +21,25 @@ class PostController extends Controller
 
         return view('post', ['post' => $post]);
     }
+
+    public function createPostView()
+    {
+        return view('createPost');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|unique:posts|max:255',
+            'body' => 'required|max2000',
+        ]);
+
+        $post = new Post();
+        $post->title = $request->get('title');
+        $post->body = $request->get('body');
+        $post->save();
+
+        return $this->index();
+    }
+
 }
